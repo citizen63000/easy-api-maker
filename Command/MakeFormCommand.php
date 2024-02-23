@@ -29,6 +29,12 @@ final class MakeFormCommand extends AbstractMakerCommand
                 'The context.'
             )
             ->addOption(
+                'parent',
+                'pa',
+                InputOption::VALUE_OPTIONAL,
+                'Ex --parent={AbstractParent}'
+            )
+            ->addOption(
                 'no-dump',
                 'nd',
                 InputOption::VALUE_NONE,
@@ -45,10 +51,11 @@ final class MakeFormCommand extends AbstractMakerCommand
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
         $context = $input->getOption('context');
+        $parent = $input->getOption('parent');
         $dumpOption = $input->getOption('no-dump');
 
         // generate form
-        $filePath = $this->generateForm($output, $entityName, $context, !$dumpOption);
+        $filePath = $this->generateForm($output, $entityName, $parent, $context, !$dumpOption);
 
         $output->writeln('------------- Execute CS Fixer -------------');
         $localFilePath = str_replace($this->container->getParameter('kernel.project_dir').'/', '', $filePath);

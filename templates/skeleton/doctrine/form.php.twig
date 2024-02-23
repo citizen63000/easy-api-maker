@@ -17,7 +17,7 @@ class {{ classname }}Type {% if parent != '' %}extends {{ parent }} {% endif %}
     /**
      * {@inheritdoc}
      */
-    public function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options): void
     {
 {% if parent != '' %}
         parent::buildForm($builder, $options);
