@@ -4,11 +4,11 @@ namespace EasyApiMaker\Command;
 
 use EasyApiMaker\Framework\EntityGenerator;
 use EasyApiMaker\Util\StringUtils\CaseConverter;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 
 final class MakeEntityCommand extends AbstractMakerCommand
 {

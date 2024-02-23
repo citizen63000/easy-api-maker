@@ -2,21 +2,20 @@
 
 namespace EasyApiMaker\Command;
 
-use EasyApiMaker\Framework\EntityGenerator;
 use EasyApiMaker\Util\StringUtils\CaseConverter;
+use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
 
-final class MakeFormCommand extends AbstractMakerCommand
+final class MakeTICommand extends AbstractMakerCommand
 {
     protected function configure()
     {
         $this
-            ->setName(self::$commandPrefix.':form')
-            ->setDescription('Generate form for entity')
+            ->setName(self::$commandPrefix.':ti')
+            ->setDescription('Generate TI for crud')
             ->addArgument(
                 'entity_name',
                 InputArgument::REQUIRED,
@@ -28,12 +27,6 @@ final class MakeFormCommand extends AbstractMakerCommand
                    InputOption::VALUE_OPTIONAL,
                 'The bundle.',
                 'AppBundle'
-            )
-            ->addOption(
-                'context',
-                'co',
-                InputOption::VALUE_OPTIONAL,
-                'The context.'
             )
             ->addOption(
                 'no-dump',
@@ -57,12 +50,10 @@ final class MakeFormCommand extends AbstractMakerCommand
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
         $bundle = $input->getOption('bundle');
-        $context = $input->getOption('context');
         $dumpOption = $input->getOption('no-dump');
         $dumpExistingFiles = !$dumpOption;
 
-        // generate form
-        $this->generateForm($output, $bundle,  $entityName, $context, $dumpExistingFiles);
-
+        // generate repository
+        $this->generateTi($output, $bundle, null, $entityName,  $dumpExistingFiles);
     }
 }
