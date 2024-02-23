@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "2ff943d71f025243c9306db8b7d183df",
+    "content-hash": "ace0a3080edb55e7b7399f8ccce152ff",
     "packages": [
         {
             "name": "behat/transliterator",
@@ -112,16 +112,16 @@
         },
         {
             "name": "citizen63000/easy-api-bundle",
-            "version": "3.1.1",
+            "version": "3.2.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/citizen63000/easy-api-bundle.git",
-                "reference": "449e303ce4429c73f466989204c8fdf261c6fde4"
+                "reference": "355dba1ec96bc6d4c627478955423f35fa8ae07e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/citizen63000/easy-api-bundle/zipball/449e303ce4429c73f466989204c8fdf261c6fde4",
-                "reference": "449e303ce4429c73f466989204c8fdf261c6fde4",
+                "url": "https://api.github.com/repos/citizen63000/easy-api-bundle/zipball/355dba1ec96bc6d4c627478955423f35fa8ae07e",
+                "reference": "355dba1ec96bc6d4c627478955423f35fa8ae07e",
                 "shasum": ""
             },
             "require": {
@@ -191,9 +191,9 @@
             ],
             "support": {
                 "issues": "https://github.com/citizen63000/easy-api-bundle/issues",
-                "source": "https://github.com/citizen63000/easy-api-bundle/tree/3.1.1"
+                "source": "https://github.com/citizen63000/easy-api-bundle/tree/3.2.0"
             },
-            "time": "2024-02-15T11:35:46+00:00"
+            "time": "2024-02-23T19:10:50+00:00"
         },
         {
             "name": "composer/pcre",
