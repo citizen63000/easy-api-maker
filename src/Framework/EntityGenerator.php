@@ -217,9 +217,9 @@ class EntityGenerator extends AbstractGenerator
      * @throws \Doctrine\DBAL\DBALException
      * @throws \ReflectionException
      */
-    public function generate(string $bundle, string $tableName, string $entityName, string $schema = null, string $parentName = null, string $inheritanceType = null, string $context = null, bool $dumpExistingFiles = true)
+    public function generate(string $tableName, string $entityName, string $schema = null, string $parentName = null, string $inheritanceType = null, string $context = null, bool $dumpExistingFiles = true)
     {
-        $this->config = $this->loadEntityConfigFromDatabase($bundle, $entityName, $tableName, $schema, $parentName, $inheritanceType, $context);
+        $this->config = $this->loadEntityConfigFromDatabase($entityName, $tableName, $schema, $parentName, $inheritanceType, $context);
 
         $destinationDir = str_replace('\\', '/', 'src\\'.$this->config->getNamespace().'\\');
         $filename = $this->config->getEntityName().'.php';

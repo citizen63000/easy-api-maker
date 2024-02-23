@@ -13,7 +13,7 @@ use Symfony\Component\Console\Exception\InvalidArgumentException;
 final class MakeEntityCommand extends AbstractMakerCommand
 {
     protected function configure()
-    {
+    { //echo 'MakeEntityCommand';die;
         $this
             ->setName(self::$commandPrefix.':entity')
             ->setDescription('Generate entity from database')
@@ -33,13 +33,6 @@ final class MakeEntityCommand extends AbstractMakerCommand
                 'ta',
                 InputOption::VALUE_OPTIONAL,
                 'Table name ex my_table or `my_schema`.`my_table`.'
-            )
-            ->addOption(
-                'bundle',
-                'bu',
-                   InputOption::VALUE_OPTIONAL,
-                'The bundle.',
-                'AppBundle'
             )
             ->addOption(
                 'context',
@@ -80,7 +73,6 @@ final class MakeEntityCommand extends AbstractMakerCommand
     {
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
-        $bundle = $input->getOption('bundle');
         $context = $input->getOption('context');
 
         $tableName = $input->getOption('table_name');
@@ -104,7 +96,7 @@ final class MakeEntityCommand extends AbstractMakerCommand
         // generate Entity class
         $output->writeln('------------- Generate Entity class -------------');
         $generator = new EntityGenerator($this->getContainer());
-        $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($bundle, $tableName, $entityName, $schema, $parent, $inheritanceType, $context, $dumpExistingFiles);
+        $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, $dumpExistingFiles);
         $output->writeln("file://{$filePath} created.");
     }
 }
