@@ -4,6 +4,7 @@ namespace EasyApiMaker\Framework;
 
 use EasyApiBundle\Model\EntityConfiguration;
 use EasyApiBundle\Model\EntityField;
+use EasyApiBundle\Util\Entity\EntityConfigLoader;
 use EasyApiBundle\Util\StringUtils\CaseConverter;
 use EasyApiBundle\Util\StringUtils\Inflector;
 
@@ -35,10 +36,10 @@ class EntityGenerator extends AbstractGenerator
             if ( null === $content['parent']) {
                 if (!$this->getConfig()->isReferential()
                     && $this->getConfig()->hasField('id', 'integer', true)
-                    && $this->getConfig()->hasField('createdAt', '\DateTime')
-                    && $this->getConfig()->hasField('updatedAt', '\DateTime')
+                    && $this->getConfig()->hasField('createdAt', 'datetime')
+                    && $this->getConfig()->hasField('updatedAt', 'datetime')
             ) {
-                    $parent = $this->container->getParameter('easy_api.inheritance.entity');
+                    $parent = $this->container->getParameter('easy_api_maker.inheritance.entity');
                     $content['uses'][] = $parent;
                     $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($parent);
 
@@ -125,8 +126,10 @@ class EntityGenerator extends AbstractGenerator
         $options = $field->isRequired() ? ', nullable=false' : ', nullable=true';
         $ormPrefix = static::$doctrineAnnotationPrefix;
 
-        if('decimal' === $field->getType()) {
+        if ('decimal' === $field->getType()) {
             $options = ', scale=' . $field->getScale() . ', precision=' . $field->getPrecision();
+        } elseif ('string' === $field->getType()) {
+            $options = ', lenght=' . $field->getLength();
         }
 
         if ($field->isPrimary()) {

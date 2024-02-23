@@ -94,7 +94,11 @@ final class MakeEntityCommand extends AbstractMakerCommand
         $generator = new EntityGenerator($this->getContainer());
         $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, $dumpExistingFiles);
         $output->writeln("file://{$filePath} created.");
-        
+
+        $output->writeln('------------- Execute CS Fixer -------------');
+        $localFilePath = str_replace($this->container->getParameter('kernel.project_dir').'/', '', $filePath);
+        exec("vendor/bin/php-cs-fixer fix $localFilePath");
+
         return Command::SUCCESS;
     }
 }
