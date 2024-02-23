@@ -1,27 +1,21 @@
 {
   "name": "citizen63000/easy-api-maker",
   "type": "symfony-bundle",
-  "description": "Home OS API",
+  "description": "",
   "keywords": ["api", "rest", "symfony"],
-  "repositories": [
-    {
-      "type": "git",
-      "url": "https://github.com/citizen63000/easy-api-bundle.git"
-    }
-  ],
   "require": {
-    "php": ">=7.4.3",
-    "citizen63000/easy-api-bundle": "dev-master"
+    "php": ">=8.1",
+    "citizen63000/easy-api-bundle": "^3.1"
   },
   "require-dev": {
     "friendsofphp/php-cs-fixer": "@stable",
-    "phpunit/phpunit": "6.*",
-    "symfony/phpunit-bridge": "^3.0"
+    "phpunit/phpunit": "9.*",
+    "symfony/phpunit-bridge": "^3.4"
   },
   "config": {
     "discard-changes": true,
     "platform": {
-      "php": "7.4.3"
+      "php": "8.1"
     },
     "sort-packages": true,
     "allow-plugins": {
