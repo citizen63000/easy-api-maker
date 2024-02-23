@@ -87,12 +87,11 @@ final class MakeEntityCommand extends AbstractMakerCommand
         $parent = $input->getOption('parent');
         $inheritanceType = $input->getOption('inheritanceType');
         $dumpOption = $input->getOption('no-dump');
-        $dumpExistingFiles = !$dumpOption;
 
         // generate Entity class
         $output->writeln('------------- Generate Entity class -------------');
         $generator = new EntityGenerator($this->getContainer());
-        $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, $dumpExistingFiles);
+        $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, !$dumpOption);
         $output->writeln("file://{$filePath} created.");
 
         $output->writeln('------------- Execute CS Fixer -------------');

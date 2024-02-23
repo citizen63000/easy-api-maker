@@ -50,15 +50,14 @@ abstract class AbstractMakerCommand extends AbstractCommand
         return $filePath;
     }
 
-    protected function generateCrud(OutputInterface $output, string $entityName, string $parent = null, string $context = null, bool $dumpExistingFiles = false)
+    protected function generateCrud(OutputInterface $output, string $entityName, string $parent = null, string $context = null, bool $dumpExistingFiles = false): string
     {
         $output->writeln("\n------------- Generate CRUD -------------");
         $generator = new CrudGenerator($this->getContainer());
-        $filesPath = $generator->generate($context, $entityName, $dumpExistingFiles);
-        foreach ($filesPath as $type => $file) {
-            $type = ucfirst($type);
-            $output->writeln("file://{$file} created.");
-        }
+        $filePath = $generator->generate($context, $entityName, $dumpExistingFiles);
+        $output->writeln("file://{$filePath} created.");
+        
+        return $filePath;
     }
 
     /**
