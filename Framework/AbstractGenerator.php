@@ -4,12 +4,13 @@ namespace EasyApiMaker\Framework;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\DBALException;
-use EasyApiMaker\Model\Maker\EntityConfiguration;
+use EasyApiBundle\Model\EntityConfiguration;
+use EasyApiBundle\Util\Entity\EntityConfigLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AbstractGenerator
 {
-    public const DEFAULT_SKELETON_PATH = '@EasyApiMaker/Resources/skeleton/';
+    public const DEFAULT_SKELETON_PATH = '@EasyApiMaker/templates/skeleton/';
 
     /**
      * @var string
@@ -123,7 +124,7 @@ class AbstractGenerator
      */
     protected function getSkeletonPath(): string
     {
-        $configPath = $this->container->getParameter('easy_api.inheritance.generator_skeleton_path', null);
+        $configPath = $this->container->getParameter('easy_api_maker.inheritance.generator_skeleton_path');
 
         return $configPath ?? self::DEFAULT_SKELETON_PATH;
     }

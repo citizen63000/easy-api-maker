@@ -9,10 +9,16 @@ use EasyApiMaker\Framework\RepositoryGenerator;
 use EasyApiMaker\Framework\TiCrudGenerator;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractMakerCommand extends AbstractCommand
 {
     protected static $commandPrefix = 'api:make';
+    
+    protected function getContainer(): ContainerInterface
+    {
+        return $this->container;
+    }
 
     /**
      * @param string $name

@@ -2,8 +2,9 @@
 
 namespace EasyApiMaker\Command;
 
+use EasyApiBundle\Util\StringUtils\CaseConverter;
 use EasyApiMaker\Framework\EntityGenerator;
-use EasyApiMaker\Util\StringUtils\CaseConverter;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -13,7 +14,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 final class MakeEntityCommand extends AbstractMakerCommand
 {
     protected function configure()
-    { //echo 'MakeEntityCommand';die;
+    {
         $this
             ->setName(self::$commandPrefix.':entity')
             ->setDescription('Generate entity from database')
@@ -62,14 +63,9 @@ final class MakeEntityCommand extends AbstractMakerCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void|null
-     *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
@@ -98,5 +94,7 @@ final class MakeEntityCommand extends AbstractMakerCommand
         $generator = new EntityGenerator($this->getContainer());
         $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, $dumpExistingFiles);
         $output->writeln("file://{$filePath} created.");
+        
+        return Command::SUCCESS;
     }
 }

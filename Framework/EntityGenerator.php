@@ -2,10 +2,10 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiMaker\Model\Maker\EntityConfiguration;
-use EasyApiMaker\Model\Maker\EntityField;
-use EasyApiMaker\Util\StringUtils\CaseConverter;
-use EasyApiMaker\Util\StringUtils\Inflector;
+use EasyApiBundle\Model\EntityConfiguration;
+use EasyApiBundle\Model\EntityField;
+use EasyApiBundle\Util\StringUtils\CaseConverter;
+use EasyApiBundle\Util\StringUtils\Inflector;
 
 class EntityGenerator extends AbstractGenerator
 {
@@ -119,10 +119,6 @@ class EntityGenerator extends AbstractGenerator
         return $content;
     }
 
-    /**
-     * @param EntityField $field
-     * @return array
-     */
     protected function getDoctrineAnnotationsForField(EntityField $field)
     {
         $annotations = [];
@@ -179,11 +175,7 @@ class EntityGenerator extends AbstractGenerator
         return $annotations;
     }
 
-    /**
-     * @param EntityField $field
-     * @return array
-     */
-    protected function generateSerializerAnnotationsForField(EntityField $field)
+    protected function generateSerializerAnnotationsForField(EntityField $field): array
     {
         $prefix = CaseConverter::convertCamelCaseToSnakeCase($this->config->getEntityName());
         $groups = ["{$prefix}_full"];
@@ -196,8 +188,6 @@ class EntityGenerator extends AbstractGenerator
 
     /**
      * Return the path to the entity skeleton
-     *
-     * @return string
      */
     protected function getEntitySkeletonPath(): string
     {
@@ -205,26 +195,16 @@ class EntityGenerator extends AbstractGenerator
     }
 
     /**
-     * @param string $bundle
-     * @param string $tableName
-     * @param string $entityName
-     * @param string|null $schema
-     * @param string|null $parentName
-     * @param string|null $inheritanceType
-     * @param string|null $context
-     * @param bool $dumpExistingFiles
-     * @return string
      * @throws \Doctrine\DBAL\DBALException
      * @throws \ReflectionException
      */
-    public function generate(string $tableName, string $entityName, string $schema = null, string $parentName = null, string $inheritanceType = null, string $context = null, bool $dumpExistingFiles = true)
+    public function generate(string $tableName, string $entityName, string $schema = null, string $parentName = null, string $inheritanceType = null, string $context = null, bool $dumpExistingFiles = true): string
     {
         $this->config = $this->loadEntityConfigFromDatabase($entityName, $tableName, $schema, $parentName, $inheritanceType, $context);
 
-        $destinationDir = str_replace('\\', '/', 'src\\'.$this->config->getNamespace().'\\');
+        $destinationDir = str_replace(['\\', 'App/'], ['/', ''], 'src\\'.$this->config->getNamespace().'\\');
         $filename = $this->config->getEntityName().'.php';
-
-        $fileContent = $this->getContainer()->get('templating')->render(
+        $fileContent = $this->getContainer()->get('twig')->render(
             $this->getEntitySkeletonPath(),
             $this->generateContent()
         );
