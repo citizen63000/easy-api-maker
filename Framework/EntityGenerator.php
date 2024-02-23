@@ -146,13 +146,15 @@ class EntityGenerator extends AbstractGenerator
             switch ($field->getRelationType()) {
                 case 'manyToOne':
                     $inversedBy = Inflector::pluralize(lcfirst($this->config->getEntityName()));
+                    $nullable = $field->isRequired() ? 'false' : 'true'; 
                     $annotations[] = "{$ormPrefix}\ManyToOne(targetEntity=\"{$field->getEntityType()}\", inversedBy=\"{$inversedBy}\")";
-                    $joinColumn = "{$ormPrefix}\JoinColumn(name=\"{$field->getTableColumnName()}\", referencedColumnName=\"{$field->getReferencedColumnName()}\")";
+                    $joinColumn = "{$ormPrefix}\JoinColumn(name=\"{$field->getTableColumnName()}\", referencedColumnName=\"{$field->getReferencedColumnName()}\", nullable={$nullable})";
                     $annotations[] = "{$ormPrefix}\JoinColumns({$joinColumn})";
                     break;
                 case 'oneToOne':
                     $annotations[] = "{$ormPrefix}\OneToOne(targetEntity=\"{$field->getEntityType()}\")";
-                    $joinColumn = "{$ormPrefix}\JoinColumn(name=\"{$field->getTableColumnName()}\", referencedColumnName=\"{$field->getReferencedColumnName()}\")";
+                    $nullable = $field->isRequired() ? 'false' : 'true';
+                    $joinColumn = "{$ormPrefix}\JoinColumn(name=\"{$field->getTableColumnName()}\", referencedColumnName=\"{$field->getReferencedColumnName()}\", nullable={$nullable})";
                     $annotations[] = "{$ormPrefix}\JoinColumns({$joinColumn})";
                     break;
                 case 'oneToMany':

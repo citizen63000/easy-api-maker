@@ -65,9 +65,9 @@ class {{ classname }}Type {% if parent != '' %}extends {{ parent }} {% endif %}
                     'by_reference' => false,
 {% endif %}
                     'constraints' => [
-{% if field.required %}
-                        new Assert\NotBlank(),
-{% endif %}
+{% for constraint in field.constraints %}
+                        {{ constraint }}
+{% endfor %}
                     ],
                 ]
             )

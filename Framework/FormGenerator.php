@@ -79,7 +79,16 @@ class FormGenerator extends AbstractGenerator
                     'type' => self::getFormTypeFromDoctrineType($field),
                     'relationType' => $field->getRelationType(),
                     'class' => !$field->isNativeType() ? $field->getEntityClassName() : null,
+                    'constraints' => [],
                 ];
+                
+                // constraints
+                if ($field->isRequired()) {
+                    $fieldDescription['constraints'][] = 'new Assert\NotBlank(),';
+                }
+                if ($length = $field->getLength()) {
+                    $fieldDescription['constraints'][] = "new Assert\Length(null, null, $length),";
+                }
 
                 // uses
                 if ('EntityType' === $fieldDescription['type']) {
@@ -97,7 +106,7 @@ class FormGenerator extends AbstractGenerator
 
                 $content['fields'][] = $fieldDescription;
 
-                if($field->isReferential() && !in_array('Doctrine\ORM\EntityRepository', $content['uses'])) {
+                if ($field->isReferential() && !in_array('Doctrine\ORM\EntityRepository', $content['uses'])) {
                     $content['uses'][] = 'Doctrine\ORM\EntityRepository';
                 }
             }
