@@ -2,28 +2,27 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiMaker\Model\Maker\EntityConfiguration;
-use EasyApiMaker\Model\Maker\EntityField;
+use EasyApiBundle\Model\EntityConfiguration;
+use EasyApiBundle\Model\EntityField;
 
 class FormGenerator extends AbstractGenerator
 {
     protected static $templatesDirectory = '/doctrine';
     /**
-     * @param string $bundle
      * @param string $context
      * @param string $entityName
      * @param string|null $parent
      * @param bool $dumpExistingFiles
      * @return string
      */
-    public function generate(string $bundle, string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false)
+    public function generate(string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false)
     {
-        $this->config = $this->loadEntityConfig($entityName, $bundle, $context);
+        $this->config = $this->loadEntityConfig($entityName, $context);
         $destinationDir = $this->getFormDirectoryPath();
         $filename = "{$this->config->getEntityName()}Type.php";
 
         // generate file
-        $fileContent = $this->getContainer()->get('templating')->render(
+        $fileContent = $this->getContainer()->get('twig')->render(
             $this->getTemplatePath('form.php.twig'),
             $this->generateContent($parent)
         );
@@ -36,9 +35,9 @@ class FormGenerator extends AbstractGenerator
      */
     protected function getFormDirectoryPath()
     {
-        $context = str_replace('\\', '/', $this->config->getContextName());
+        $context = str_replace(['\\', 'App/'], ['/', ''], $this->config->getContextName());
 
-        return 'src/'.$this->config->getBundleName()."/Form/Type/{$context}";
+        return "src/Form/Type/{$context}";
     }
 
     /**
@@ -47,7 +46,6 @@ class FormGenerator extends AbstractGenerator
      */
     protected function generateContent(?string $parent)
     {
-        $bundle = $this->config->getBundleName();
         $context = str_replace('/', '\\', $this->config->getContextName());
         $content = ['fields' => [], 'uses' => [$this->config->getFullName() => $this->config->getFullName()], '__construct' => ['fields' => []]];
         $parentConfig = $this->getConfig()->getParentEntity();
@@ -63,8 +61,8 @@ class FormGenerator extends AbstractGenerator
             $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($this->container->getParameter('easy_api.inheritance.form'));
         }
 
-        $content['namespace'] = "{$bundle}\\Form\\Type".(!empty($context) ? "\\{$context}" : '');
-        $content['entityNamespace'] = $this->config->getNamespace();//"{$bundle}\\Entity".(!empty($context) ? "\\{$context}" : '');
+        $content['namespace'] = "App\\Form\\Type".(!empty($context) ? "\\{$context}" : '');
+        $content['entityNamespace'] = $this->config->getNamespace();
         $content['classname'] = $this->config->getEntityName();
         $content['extend'] = $this->config->getEntityType();
         $content['block_prefix'] = strtolower($content['classname']);

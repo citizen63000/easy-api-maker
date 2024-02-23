@@ -30,53 +30,31 @@ abstract class AbstractMakerCommand extends AbstractCommand
         }
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param $bundle string
-     * @param $context string
-     * @param $entityName string
-     * @param $dumpExistingFiles boolean
-     */
-    protected function generateRepository(OutputInterface $output, string $bundle, string $entityName, string $context = null, bool $dumpExistingFiles = false)
+    protected function generateRepository(OutputInterface $output, string $entityName, string $context = null, bool $dumpExistingFiles = false)
     {
         $output->writeln("\n------------- Generate Entity class -------------");
         $generator = new RepositoryGenerator($this->getContainer());
-        $filePath = $generator->generate($bundle, $entityName, $context, $dumpExistingFiles);
+        $filePath = $generator->generate($entityName, $context, $dumpExistingFiles);
         $output->writeln("file://$filePath[0] created.");
         $output->writeln("file://$filePath[1] modified.");
     }
 
 
-    /**
-     * @param OutputInterface $output
-     * @param $bundle string
-     * @param $context string
-     * @param $entityName string
-     * @param $parent string
-     * @param $dumpExistingFiles boolean
-     */
-    protected function generateForm(OutputInterface $output, string $bundle, string $entityName, $parent = null, string $context = null, bool $dumpExistingFiles = false)
+    protected function generateForm(OutputInterface $output, string $entityName, $parent = null, string $context = null, bool $dumpExistingFiles = false): string
     {
         $output->writeln('------------- Generate Form -------------');
         $generator = new FormGenerator($this->getContainer());
-        $filePath = $generator->generate($bundle, $context, $entityName, $parent, $dumpExistingFiles);
+        $filePath = $generator->generate($context, $entityName, $parent, $dumpExistingFiles);
         $output->writeln("file://{$filePath} created.\n");
+        
+        return $filePath;
     }
 
-    /**
-     * @param OutputInterface $output
-     * @param string $bundle
-     * @param string $entityName
-     * @param string|null $parent
-     * @param string|null $context
-     * @param bool $dumpExistingFiles
-     * @throws \Twig\Error\Error
-     */
-    protected function generateCrud(OutputInterface $output, string $bundle, string $entityName, string $parent = null, string $context = null, bool $dumpExistingFiles = false)
+    protected function generateCrud(OutputInterface $output, string $entityName, string $parent = null, string $context = null, bool $dumpExistingFiles = false)
     {
         $output->writeln("\n------------- Generate CRUD -------------");
         $generator = new CrudGenerator($this->getContainer());
-        $filesPath = $generator->generate($bundle, $context, $entityName, $dumpExistingFiles);
+        $filesPath = $generator->generate($context, $entityName, $dumpExistingFiles);
         foreach ($filesPath as $type => $file) {
             $type = ucfirst($type);
             $output->writeln("file://{$file} created.");

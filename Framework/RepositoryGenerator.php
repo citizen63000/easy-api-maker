@@ -23,17 +23,9 @@ class RepositoryGenerator extends AbstractGenerator
         return $content;
     }
 
-    /**
-     * @param string $bundle
-     * @param string $entityName
-     * @param string|null $context
-     * @param bool $dumpExistingFiles
-     *
-     * @return array paths to the generated files
-     */
-    public function generate(string $bundle, string $entityName, ?string $context, bool $dumpExistingFiles = false)
+    public function generate(string $entityName, ?string $context, bool $dumpExistingFiles = false): array
     {
-        $this->config = $this->loadEntityConfig($entityName, $bundle, $context);
+        $this->config = $this->loadEntityConfig($entityName, $context);
         $path = $this->config->getBundleName().'/Repository/'.($this->config->getContextName() ? $this->config->getContextName().'/' : '');
         $this->config->setRepositoryClass(str_replace('/', '\\', $path).$this->config->getEntityName().'Repository');
         $filename = $this->config->getEntityName().'Repository.php';

@@ -3,6 +3,7 @@
 namespace EasyApiMaker\Command;
 
 use EasyApiMaker\Util\StringUtils\CaseConverter;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,13 +23,6 @@ final class MakeFormCommand extends AbstractMakerCommand
                 'Entity name.'
             )
             ->addOption(
-                'bundle',
-                'bu',
-                   InputOption::VALUE_OPTIONAL,
-                'The bundle.',
-                'AppBundle'
-            )
-            ->addOption(
                 'context',
                 'co',
                 InputOption::VALUE_OPTIONAL,
@@ -44,24 +38,22 @@ final class MakeFormCommand extends AbstractMakerCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void|null
-     *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
-        $bundle = $input->getOption('bundle');
         $context = $input->getOption('context');
         $dumpOption = $input->getOption('no-dump');
-        $dumpExistingFiles = !$dumpOption;
 
         // generate form
-        $this->generateForm($output, $bundle,  $entityName, $context, $dumpExistingFiles);
+        $filePath = $this->generateForm($output, $entityName, $context, !$dumpOption);
 
+        $output->writeln('------------- Execute CS Fixer -------------');
+        $localFilePath = str_replace($this->container->getParameter('kernel.project_dir').'/', '', $filePath);
+        exec("vendor/bin/php-cs-fixer fix $localFilePath");
+        
+        return Command::SUCCESS;
     }
 }
