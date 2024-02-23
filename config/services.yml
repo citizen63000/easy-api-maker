@@ -5,5 +5,5 @@ services:
     public: false
 
 
-  EasyApiMaker\:
-    resource: '../src'
+  EasyApiMaker\Command\:
+    resource: '../Command'
