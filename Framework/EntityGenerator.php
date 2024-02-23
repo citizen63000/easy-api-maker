@@ -129,7 +129,7 @@ class EntityGenerator extends AbstractGenerator
         if ('decimal' === $field->getType()) {
             $options = ', scale=' . $field->getScale() . ', precision=' . $field->getPrecision();
         } elseif ('string' === $field->getType()) {
-            $options = ', lenght=' . $field->getLength();
+            $options = ', length=' . $field->getLength();
         }
 
         if ($field->isPrimary()) {
