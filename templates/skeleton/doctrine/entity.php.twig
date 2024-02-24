@@ -54,10 +54,8 @@ class {{ classname }}{% if parent != '' %} extends {{ parent }} {% endif %}
     public function {{ field.setter }}(array ${{ field.name }}): void
     {
         $this->{{ field.name }} = new ArrayCollection();
-        if (null !== ${{ field.name }}) {
-            foreach (${{ field.name }} as $entity) {
-                $this->{{ field.adder }}($entity);
-            }
+        foreach (${{ field.name }} as $entity) {
+            $this->{{ field.adder }}($entity);
         }
     }
 
