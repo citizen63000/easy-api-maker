@@ -30,13 +30,15 @@ abstract class AbstractMakerCommand extends AbstractCommand
         }
     }
 
-    protected function generateRepository(OutputInterface $output, string $entityName, string $context = null, bool $dumpExistingFiles = false)
+    protected function generateRepository(OutputInterface $output, string $entityName, string $context = null, bool $dumpExistingFiles = false): array
     {
         $output->writeln("\n------------- Generate Entity class -------------");
         $generator = new RepositoryGenerator($this->getContainer());
         $filePath = $generator->generate($entityName, $context, $dumpExistingFiles);
         $output->writeln("file://$filePath[0] created.");
         $output->writeln("file://$filePath[1] modified.");
+        
+        return $filePath;
     }
 
 

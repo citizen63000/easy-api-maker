@@ -3,7 +3,7 @@
 namespace EasyApiMaker\Command;
 
 use EasyApiMaker\Util\StringUtils\CaseConverter;
-use Symfony\Component\Console\Exception\InvalidArgumentException;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
@@ -20,13 +20,6 @@ final class MakeRepositoryCommand extends AbstractMakerCommand
                 'entity_name',
                 InputArgument::REQUIRED,
                 'Entity name.'
-            )
-            ->addOption(
-                'bundle',
-                'bu',
-                   InputOption::VALUE_OPTIONAL,
-                'The bundle.',
-                'AppBundle'
             )
             ->addOption(
                 'context',
@@ -51,17 +44,23 @@ final class MakeRepositoryCommand extends AbstractMakerCommand
      *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entityName = $input->getArgument('entity_name');
         $this->validateEntityName($entityName);
-        $bundle = $input->getOption('bundle');
         $context = $input->getOption('context');
         $dumpOption = $input->getOption('no-dump');
         $dumpExistingFiles = !$dumpOption;
 
         // generate repository
-        $this->generateRepository($output, $bundle, $entityName, $context, $dumpExistingFiles);
+        $filePath = $this->generateRepository($output, $entityName, $context, $dumpExistingFiles);
 
+        $output->writeln('------------- Execute CS Fixer -------------');
+        $localFilePath = str_replace($this->container->getParameter('kernel.project_dir').'/', '', $filePath[0]);
+        exec("vendor/bin/php-cs-fixer fix $localFilePath");
+        $localFilePath = str_replace($this->container->getParameter('kernel.project_dir').'/', '', $filePath[1]);
+        exec("vendor/bin/php-cs-fixer fix $localFilePath");
+        
+        return Command::SUCCESS;
     }
 }

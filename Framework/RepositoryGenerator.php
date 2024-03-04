@@ -2,7 +2,7 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiMaker\Model\Maker\EntityConfiguration;
+use EasyApiBundle\Model\EntityConfiguration;
 
 class RepositoryGenerator extends AbstractGenerator
 {
@@ -17,8 +17,8 @@ class RepositoryGenerator extends AbstractGenerator
         $content['namespace'] = $this->config->getBundleName().'\Repository'.($this->config->getContextName() ? '\\'.$this->config->getContextName() : '');
 
         $content['uses'] = [];
-        $content['uses'][] = $this->container->getParameter('easy_api.inheritance.repository');
-        $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($this->container->getParameter('easy_api.inheritance.repository'));
+        $content['uses'][] = $this->container->getParameter('easy_api_maker.inheritance.repository');
+        $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($this->container->getParameter('easy_api_maker.inheritance.repository'));
 
         return $content;
     }
@@ -26,15 +26,15 @@ class RepositoryGenerator extends AbstractGenerator
     public function generate(string $entityName, ?string $context, bool $dumpExistingFiles = false): array
     {
         $this->config = $this->loadEntityConfig($entityName, $context);
-        $path = $this->config->getBundleName().'/Repository/'.($this->config->getContextName() ? $this->config->getContextName().'/' : '');
-        $this->config->setRepositoryClass(str_replace('/', '\\', $path).$this->config->getEntityName().'Repository');
+        $path = 'Repository/'.($this->config->getContextName() ? $this->config->getContextName().'/' : '');
+        $this->config->setRepositoryClass('App\\'.str_replace('/', '\\', $path).$this->config->getEntityName().'Repository');
         $filename = $this->config->getEntityName().'Repository.php';
 
         $files = [];
 
         // Create entityRepository file
-        $fileContent = $this->getContainer()->get('templating')->render(
-            '@EasyApiMaker/Resources/skeleton/doctrine/entity_repository.php.twig',
+        $fileContent = $this->getContainer()->get('twig')->render(
+            $this->getTemplatePath('doctrine/entity_repository.php.twig'),
             $this->generateContent()
         );
 
@@ -67,9 +67,9 @@ class RepositoryGenerator extends AbstractGenerator
         $content = file_get_contents($this->config->getEntityFileClassPath());
         $repositoryClass = $this->config->getRepositoryClass();
 
-        if(preg_match('/@ORM\\\Entity\(\)/', $content)) {
+        if (preg_match('/@ORM\\\Entity\(\)/', $content)) {
             $content = str_replace('@ORM\\Entity()', "@ORM\Entity(repositoryClass=\"{$repositoryClass}\")", $content);
-        } elseif(preg_match('/@ORM\\\Entity\(.*repositoryClass="(.+)"\)/', $content, $matches)) {
+        } elseif (preg_match('/@ORM\\\Entity\(.*repositoryClass="(.+)"\)/', $content, $matches)) {
             $content = str_replace($matches[1], $repositoryClass, $content);
         }
 
