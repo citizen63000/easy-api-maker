@@ -39,7 +39,11 @@ class EntityGenerator extends AbstractGenerator
                     && $this->getConfig()->hasField('createdAt', 'datetime')
                     && $this->getConfig()->hasField('updatedAt', 'datetime')
             ) {
-                    $parent = $this->container->getParameter('easy_api_maker.inheritance.entity');
+                    if ($this->getConfig()->hasField('uuid', 'string', true)) {
+                        $parent = $this->container->getParameter('easy_api_maker.inheritance.entity_with_uuid');
+                    } else {
+                        $parent = $this->container->getParameter('easy_api_maker.inheritance.entity');
+                    }
                     $content['uses'][] = $parent;
                     $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($parent);
 
@@ -47,7 +51,7 @@ class EntityGenerator extends AbstractGenerator
                     $parentConfig = EntityConfigLoader::createEntityConfigFromAnnotations(null, $parent);
 
                 } elseif($this->getConfig()->isReferential()) { // referential
-                    $parent = $this->container->getParameter('easy_api.inheritance.entity_referential');
+                    $parent = $this->container->getParameter('easy_api_maker.inheritance.entity_referential');
                     $content['uses'][] = $parent;
                     $content['parent'] = EntityConfiguration::getEntityNameFromNamespace($parent);
 

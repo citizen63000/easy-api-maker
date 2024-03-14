@@ -27,6 +27,7 @@ class Configuration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('generator_skeleton_path')->defaultValue('@EasyApiMaker/skeleton/')->end()
                         ->scalarNode('entity')->defaultValue('EasyApiBundle\Entity\AbstractBaseEntity')->end()
+                        ->scalarNode('entity_with_uuid')->defaultValue('EasyApiBundle\Entity\AbstractBaseUniqueEntity')->end()
                         ->scalarNode('entity_referential')->defaultValue('EasyApiBundle\Entity\AbstractBaseReferential')->end()
                         ->scalarNode('form')->defaultValue('EasyApiBundle\Form\Type\AbstractApiType')->end()
                         ->scalarNode('repository')->defaultValue('EasyApiBundle\Util\AbstractRepository')->end()
