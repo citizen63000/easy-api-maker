@@ -27,40 +27,22 @@ class AbstractGenerator
      */
     protected $config;
 
-    /**
-     * AbstractGenerator constructor.
-     *
-     * @param ContainerInterface $container
-     */
     public function __construct(ContainerInterface $container)
     {
         $this->container = $container;
     }
 
-    /**
-     * @return ContainerInterface
-     */
     protected function getContainer(): ContainerInterface
     {
         return $this->container;
     }
 
-    /**
-     * @return EntityConfiguration
-     */
     protected function getConfig(): EntityConfiguration
     {
         return $this->config;
     }
 
     /**
-     * @param string $entityName
-     * @param string $tableName
-     * @param string|null $schema
-     * @param string|null $parentEntityName
-     * @param string|null $inheritanceType
-     * @param string|null $context
-     * @return EntityConfiguration
      * @throws DBALException
      */
     protected function loadEntityConfigFromDatabase(string $entityName, string $tableName, string $schema = null, string $parentEntityName = null, string $inheritanceType = null, string $context =null): EntityConfiguration
@@ -68,14 +50,9 @@ class AbstractGenerator
         return EntityConfigLoader::createEntityConfigFromDatabase($this->getDoctrine()->getManager(), $entityName, $tableName, $schema, $parentEntityName, $inheritanceType, $context);
     }
 
-    /**
-     * @param string $entityName
-     * @param string|null $context
-     * @return EntityConfiguration|null
-     */
     protected function loadEntityConfig(string $entityName, string $context = null): ?EntityConfiguration
     {
-        $this->config = EntityConfigLoader::findAndCreateFromEntityName($entityName);
+        $this->config = EntityConfigLoader::findAndCreateFromEntityName($entityName, $context);
 
 //        if ($parentEntityName) {
 //            $parentConfig = EntityConfigLoader::findAndCreateFromEntityName($parentEntityName);
@@ -85,22 +62,11 @@ class AbstractGenerator
         return $this->config;
     }
 
-    /**
-     * @return string
-     */
     protected static function getConsoleCommand(): string
     {
         return 'bin/console';
     }
 
-    /**
-     * @param string $directory
-     * @param string $filename
-     * @param string $fileContent
-     * @param bool $dumpExistingFiles
-     * @param bool $returnAbsolutePath
-     * @return string
-     */
     protected function writeFile(string $directory, string $filename, string $fileContent, bool $dumpExistingFiles = false, bool $returnAbsolutePath = false): string
     {
         $destinationFile = '/' === $directory[strlen($directory)-1] ? "{$directory}{$filename}" : "{$directory}/{$filename}";
@@ -119,9 +85,6 @@ class AbstractGenerator
         return ($returnAbsolutePath ? "{$this->container->getParameter('kernel.project_dir')}/" : '').$destinationFile;
     }
 
-    /**
-     * @return string
-     */
     protected function getSkeletonPath(): string
     {
         $configPath = $this->container->getParameter('easy_api_maker.inheritance.generator_skeleton_path');
@@ -129,10 +92,6 @@ class AbstractGenerator
         return $configPath ?? self::DEFAULT_SKELETON_PATH;
     }
 
-    /**
-     * @param string $templateName
-     * @return string
-     */
     protected function getTemplatePath(string $templateName): string
     {
         return $this->getSkeletonPath().static::$templatesDirectory."/$templateName";
@@ -140,8 +99,6 @@ class AbstractGenerator
 
     /**
      * Return the path of the entity.
-     * @param string $context
-     * @return string
      */
     protected function generateEntityFolderPath(string $context): string
     {
@@ -166,31 +123,17 @@ class AbstractGenerator
         return $this->container->get('doctrine');
     }
 
-    /**
-     * @param $typeName
-     * @return string|null
-     */
-    public static function findTypeFile($typeName): ?string
+    public static function findTypeFile(string $typeName): ?string
     {
         return self::findFileRecursive('src/Form/Type', $typeName);
     }
 
-    /**
-     * @param $entityName
-     * @return string|null
-     */
-    public static function findEntityFile($entityName): ?string
+    public static function findEntityFile(string $entityName): ?string
     {
         return self::findFileRecursive('src/Entity', "{$entityName}.php");
     }
 
-    /**
-     * @param $path
-     * @param $filename
-     *
-     * @return string|null
-     */
-    protected static function findFileRecursive($path, $filename): ?string
+    protected static function findFileRecursive(string $path, string $filename): ?string
     {
         $files = scandir($path);
         foreach ($files as $file) {

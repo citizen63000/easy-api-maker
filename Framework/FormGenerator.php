@@ -15,7 +15,7 @@ class FormGenerator extends AbstractGenerator
      * @param bool $dumpExistingFiles
      * @return string
      */
-    public function generate(string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false)
+    public function generate(?string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false)
     {
         $this->config = $this->loadEntityConfig($entityName, $context);
         $destinationDir = $this->getFormDirectoryPath();
