@@ -285,7 +285,7 @@ class TiCrudGenerator extends AbstractGenerator
 //                $columns[] = $columnIdName;
 //                $values['id'] = $fixtures[$parentConfig->getEntityName()][$columnIdName]['value'];
 //            } else {
-//                echo "Impossible to find {$parent->getEntityName()} parent class\n";
+//                echo "Parent class {$parent->getEntityName()} not found\n";
 //            }
         }
 
@@ -298,11 +298,15 @@ class TiCrudGenerator extends AbstractGenerator
 
         // Other fields
         foreach ($fields as $field) {
-            $columns[] = $field->getTableColumnName();
+            
             if (!$field->isNativeType()) {
-                $values[$field->getTableColumnName()] = 1;
+                if (in_array($field->getRelationType(), ['oneToOne', 'manyToOne'])) {
+                    $values[$field->getTableColumnName()] = 1;
+                    $columns[] = $field->getTableColumnName();
+                }
             } else {
                 $values[$field->getTableColumnName()] = $fixtures[$config->getEntityName()][$field->getName()]['value'];
+                $columns[] = $field->getTableColumnName();
             }
         }
 
@@ -384,16 +388,14 @@ class TiCrudGenerator extends AbstractGenerator
 
     protected function getContextDirectoryPath(): string
     {
-        return "tests/Functional/".(!empty($this->config->getContextNameForPath()) ? "{$this->config->getContextNameForPath()}/" : '');
+        return 'tests/Functional/'.(!empty($this->config->getContextNameForPath()) ? "{$this->config->getContextNameForPath()}/" : '');
     }
 
     protected function getRouteNamePrefix(): string
     {
-        $bundleName = $this->config->getBundleName();
-        $prefix = str_replace(['API', 'Bundle'], ['api_', ''], $bundleName);
         $contextName = str_replace(['\\', '/'], '_', $this->config->getContextName());
 
-        return CaseConverter::convertToSnakeCase($prefix.(!empty($contextName) ? "_{$contextName}" : ''));
+        return CaseConverter::convertToSnakeCase(!empty($contextName) ? "_{$contextName}" : '');
     }
 
     public function getEntityTestsDirectory(): string
