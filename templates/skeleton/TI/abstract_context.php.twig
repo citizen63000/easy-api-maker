@@ -2,19 +2,16 @@
 
 namespace {{ namespace }};
 
-use \Tests\{{ bundle_name }}\Abstract{{ bundle_name }}Test;
+use App\Tests\Functional\AbstractFunctionalTest;
 use {{ entity_use }};
 
-abstract class {{ abstractContextName }} extends Abstract{{ bundle_name }}Test
+abstract class {{ abstractContextName }} extends AbstractFunctionalTest
 {
     protected const baseRouteName = '{{ route_name_prefix }}';
     protected const entityClass = {{ entity_name }}::class;
 
     protected static $additionalInitFiles = ['{{ additionalInitFile }}'];
 
-    /**
-     * @return array
-     */
     protected static function getRequiredFields(): array
     {
         return [{{ requiredFieldsForArray|raw }}];

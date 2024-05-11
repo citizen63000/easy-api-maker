@@ -64,16 +64,15 @@ abstract class AbstractMakerCommand extends AbstractCommand
 
     /**
      * @param OutputInterface $output
-     * @param string|null $bundle string
      * @param string|null $context string
      * @param $entityName string
      * @param $dumpExistingFiles boolean
      */
-    protected function generateTI(OutputInterface $output, ?string $bundle, ?string $context, string $entityName, bool $dumpExistingFiles = false)
+    protected function generateTI(OutputInterface $output, ?string $context, string $entityName, bool $dumpExistingFiles = false)
     {
         $output->writeln("\n------------- Generate TI -------------");
         $generator = new TiCrudGenerator($this->getContainer());
-        $filesPath = $generator->generate($bundle, $context, $entityName, $dumpExistingFiles);
+        $filesPath = $generator->generate($context, $entityName, $dumpExistingFiles);
         foreach ($filesPath as $type => $file) {
             $type = ucfirst($type);
             $output->writeln("file://{$file} created.");

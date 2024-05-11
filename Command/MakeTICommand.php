@@ -3,6 +3,7 @@
 namespace EasyApiMaker\Command;
 
 use EasyApiMaker\Util\StringUtils\CaseConverter;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Exception\InvalidArgumentException;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
@@ -22,11 +23,10 @@ final class MakeTICommand extends AbstractMakerCommand
                 'Entity name.'
             )
             ->addOption(
-                'bundle',
-                'bu',
-                   InputOption::VALUE_OPTIONAL,
-                'The bundle.',
-                'AppBundle'
+                'context',
+                'co',
+                InputOption::VALUE_OPTIONAL,
+                'The context.'
             )
             ->addOption(
                 'no-dump',
@@ -38,22 +38,19 @@ final class MakeTICommand extends AbstractMakerCommand
     }
 
     /**
-     * @param InputInterface  $input
-     * @param OutputInterface $output
-     *
-     * @return int|void|null
-     *
      * @throws \Exception
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $entityName = $input->getArgument('entity_name');
+        $context = $input->getOption('context');
         $this->validateEntityName($entityName);
-        $bundle = $input->getOption('bundle');
         $dumpOption = $input->getOption('no-dump');
         $dumpExistingFiles = !$dumpOption;
 
         // generate repository
-        $this->generateTi($output, $bundle, null, $entityName,  $dumpExistingFiles);
+        $this->generateTi($output, $context, $entityName,  $dumpExistingFiles);
+
+        return Command::SUCCESS;
     }
 }
