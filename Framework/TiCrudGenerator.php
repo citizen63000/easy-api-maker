@@ -148,7 +148,7 @@ class TiCrudGenerator extends AbstractGenerator
     {
         $contextName = str_replace(['\\', '/'], '', $this->config->getContextName());
 
-        return "Abstract{$contextName}{$this->config->getEntityName()}Test";
+        return "Abstract{$contextName}{$this->config->getEntityName()}";
     }
 
     protected function generateCsv(array $fixtures, bool $dumpExistingFiles = false): string
@@ -395,7 +395,7 @@ class TiCrudGenerator extends AbstractGenerator
     {
         $contextName = str_replace(['\\', '/'], '_', $this->config->getContextName());
 
-        return CaseConverter::convertToSnakeCase(!empty($contextName) ? "_{$contextName}" : '');
+        return CaseConverter::convertToSnakeCase(!empty($contextName) ? "{$contextName}" : '');
     }
 
     public function getEntityTestsDirectory(): string
