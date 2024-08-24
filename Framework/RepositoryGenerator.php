@@ -2,14 +2,11 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiBundle\Model\EntityConfiguration;
+use EasyApiCore\Model\EntityConfiguration;
 
 class RepositoryGenerator extends AbstractGenerator
 {
-    /**
-     * @return array
-     */
-    protected function generateContent()
+    protected function generateContent(): array
     {
         $content = [];
 

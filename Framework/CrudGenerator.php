@@ -2,8 +2,8 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiBundle\Util\Entity\EntityConfigLoader;
-use EasyApiBundle\Util\StringUtils\CaseConverter;
+use EasyApiCore\Util\Entity\EntityConfigLoader;
+use EasyApiCore\Util\String\CaseConverter;
 
 class CrudGenerator extends AbstractGenerator
 {

@@ -4,8 +4,8 @@ namespace EasyApiMaker\Framework;
 
 use Doctrine\Common\Persistence\ManagerRegistry;
 use Doctrine\DBAL\DBALException;
-use EasyApiBundle\Model\EntityConfiguration;
-use EasyApiBundle\Util\Entity\EntityConfigLoader;
+use EasyApiCore\Model\EntityConfiguration;
+use EasyApiCore\Util\Entity\EntityConfigLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class AbstractGenerator

@@ -2,8 +2,8 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiBundle\Model\EntityConfiguration;
-use EasyApiBundle\Model\EntityField;
+use EasyApiCore\Model\EntityConfiguration;
+use EasyApiCore\Model\EntityField;
 
 class FormGenerator extends AbstractGenerator
 {

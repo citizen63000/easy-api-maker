@@ -2,11 +2,11 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiBundle\Model\EntityConfiguration;
-use EasyApiBundle\Model\EntityField;
-use EasyApiBundle\Util\Entity\EntityConfigLoader;
-use EasyApiBundle\Util\StringUtils\CaseConverter;
-use EasyApiBundle\Util\StringUtils\Inflector;
+use EasyApiCore\Model\EntityConfiguration;
+use EasyApiCore\Model\EntityField;
+use EasyApiCore\Util\Entity\EntityConfigLoader;
+use EasyApiCore\Util\String\CaseConverter;
+use EasyApiCore\Util\String\Inflector;
 
 class EntityGenerator extends AbstractGenerator
 {

@@ -2,9 +2,9 @@
 
 namespace EasyApiMaker\Framework;
 
-use EasyApiBundle\Model\EntityConfiguration;
-use EasyApiBundle\Util\Forms\FormSerializer;
-use EasyApiBundle\Util\StringUtils\CaseConverter;
+use EasyApiCore\Model\EntityConfiguration;
+use EasyApiCore\Util\Forms\FormSerializer;
+use EasyApiCore\Util\String\CaseConverter;
 use Symfony\Component\Form\FormInterface;
 
 class TiCrudGenerator extends AbstractGenerator

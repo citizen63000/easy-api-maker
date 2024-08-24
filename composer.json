@@ -5,7 +5,7 @@
   "keywords": ["api", "rest", "symfony"],
   "require": {
     "php": ">=8.1",
-    "citizen63000/easy-api-bundle": "dev-master|^3.2.1",
+    "citizen63000/easy-api-core": "dev-main",
     "friendsofphp/php-cs-fixer": "@stable",
     "phpunit/phpunit": "9.*",
     "symfony/phpunit-bridge": "^3.4"
@@ -24,5 +24,7 @@
     "psr-4": {
       "EasyApiMaker\\": ""
     }
-  }
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true
 }

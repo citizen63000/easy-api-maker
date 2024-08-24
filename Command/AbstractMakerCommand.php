@@ -2,7 +2,7 @@
 
 namespace EasyApiMaker\Command;
 
-use EasyApiBundle\Util\AbstractCommand;
+use EasyApiCore\Command\AbstractCommand;
 use EasyApiMaker\Framework\CrudGenerator;
 use EasyApiMaker\Framework\FormGenerator;
 use EasyApiMaker\Framework\RepositoryGenerator;
@@ -13,7 +13,7 @@ use Symfony\Component\DependencyInjection\ContainerInterface;
 
 abstract class AbstractMakerCommand extends AbstractCommand
 {
-    protected static $commandPrefix = 'api:make';
+    protected static string $commandPrefix = 'api:make';
     
     protected function getContainer(): ContainerInterface
     {
