@@ -5,7 +5,7 @@
   "keywords": ["api", "rest", "symfony"],
   "require": {
     "php": ">=8.1",
-    "citizen63000/easy-api-core": "dev-main",
+    "citizen63000/easy-api-core": "dev-sf6.4",
     "friendsofphp/php-cs-fixer": "@stable",
     "phpunit/phpunit": "9.*",
     "symfony/phpunit-bridge": "^3.4"
