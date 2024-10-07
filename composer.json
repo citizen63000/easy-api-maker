@@ -8,7 +8,7 @@
     "citizen63000/easy-api-core": "dev-main",
     "friendsofphp/php-cs-fixer": "@stable",
     "phpunit/phpunit": "9.*",
-    "symfony/phpunit-bridge": "^3.4"
+    "symfony/phpunit-bridge": "^6.4"
   },
   "config": {
     "discard-changes": true,
