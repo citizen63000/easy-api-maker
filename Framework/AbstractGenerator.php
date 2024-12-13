@@ -7,6 +7,7 @@ use Doctrine\DBAL\DBALException;
 use EasyApiCore\Model\EntityConfiguration;
 use EasyApiCore\Util\Entity\EntityConfigLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Environment;
 
 class AbstractGenerator
 {
@@ -26,10 +27,13 @@ class AbstractGenerator
      * @var EntityConfiguration
      */
     protected $config;
+    
+    protected Environment $twig;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(ContainerInterface $container, Environment $twig)
     {
         $this->container = $container;
+        $this->twig = $twig;
     }
 
     protected function getContainer(): ContainerInterface

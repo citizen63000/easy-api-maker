@@ -213,7 +213,7 @@ class EntityGenerator extends AbstractGenerator
 
         $destinationDir = str_replace(['\\', 'App/'], ['/', ''], 'src\\'.$this->config->getNamespace().'\\');
         $filename = $this->config->getEntityName().'.php';
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getEntitySkeletonPath(),
             $this->generateContent()
         );

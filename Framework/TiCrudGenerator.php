@@ -58,7 +58,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateGetTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_get.php.twig'),
             $this->generateContent()
         );
@@ -71,7 +71,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateGetListTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_get_list.php.twig'),
             $this->generateContent()
         );
@@ -84,7 +84,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateDescribeFormTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_describe_form.php.twig'),
             $this->generateContent()
         );
@@ -97,7 +97,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateDeleteTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_delete.php.twig'),
             $this->generateContent()
         );
@@ -110,7 +110,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generatePostTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_post.php.twig'),
             $this->generateContent()
         );
@@ -123,7 +123,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generatePutTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_put.php.twig'),
             $this->generateContent()
         );
@@ -136,7 +136,7 @@ class TiCrudGenerator extends AbstractGenerator
     protected function generateAbstractContext(bool $dumpExistingFiles = false): string
     {
         $abstractContextName = $this->getAbstractContextTestName();
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('abstract_context.php.twig'),
             $this->generateContent()
         );
@@ -163,7 +163,7 @@ class TiCrudGenerator extends AbstractGenerator
         $directory = $this->generateDataCsvDirectoryPath();
         foreach ($dataFixtures['tables'] as $table) {
 
-            $fileContent = $this->getContainer()->get('twig')->render(
+            $fileContent = $this->twig->render(
                 $this->getTemplatePath('crud_data.csv.twig'),
                 [ 'table' => $table]
             );
@@ -187,7 +187,7 @@ class TiCrudGenerator extends AbstractGenerator
         }
 
         // yml content
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('crud_data.yml.twig'),
             ['files' => $ymlData]
         );

@@ -30,7 +30,7 @@ class CrudGenerator extends AbstractGenerator
      */
     protected function generateController(bool $dumpExistingFiles): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('doctrine/crud_controller.php.twig'),
             $this->generateContent()
         );
@@ -63,13 +63,12 @@ class CrudGenerator extends AbstractGenerator
      */
     protected function getRouteNamePrefix(): string
     {
-        $prefix = str_replace(['API', 'Bundle'], ['api_', ''], $this->config->getContextName());
-
-        if(!empty($this->config->getContextName())) {
+        if (!empty($this->config->getContextName())) {
+            $prefix = str_replace(['API', 'Bundle'], ['api_', ''], $this->config->getContextName());
             return CaseConverter::convertToSnakeCase($prefix.'_'.str_replace(['\\', '/'], '_', $this->config->getContextName()));
         }
 
-        return CaseConverter::convertToSnakeCase($prefix);
+        return '';
     }
 
     /**

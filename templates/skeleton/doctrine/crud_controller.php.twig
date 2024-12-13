@@ -9,9 +9,9 @@ use {{ use }};
 {% endfor %}
 
 /**
- * @Route("/{{ entity_url_name }}", name="{{ route_name_prefix }}_{{ entity_route_name }}")
  * @OA\Tag(name="{{ entity_name }}")
  */
+#[Route(path: '/{{ entity_url_name }}', name: '{{ route_name_prefix }}')]
 class {{ entity_name }}Controller extends {{ parent }}
 {
     public const entityClass = {{ entity_name }}::class;

@@ -22,7 +22,7 @@ class FormGenerator extends AbstractGenerator
         $filename = "{$this->config->getEntityName()}Type.php";
 
         // generate file
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->twig->render(
             $this->getTemplatePath('form.php.twig'),
             $this->generateContent($parent)
         );
