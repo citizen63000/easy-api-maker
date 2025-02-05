@@ -8,11 +8,7 @@ use EasyApiCore\Util\String\CaseConverter;
 class CrudGenerator extends AbstractGenerator
 {
     /**
-     * @param string|null $context
-     * @param string $entityName
-     * @param bool $dumpExistingFiles
-     *
-     * @return array paths to the generated files
+     * @return string paths to the generated files
      */
     public function generate(?string $context, string $entityName, bool $dumpExistingFiles = false): string
     {
@@ -30,7 +26,7 @@ class CrudGenerator extends AbstractGenerator
      */
     protected function generateController(bool $dumpExistingFiles): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('doctrine/crud_controller.php.twig'),
             $this->generateContent()
         );

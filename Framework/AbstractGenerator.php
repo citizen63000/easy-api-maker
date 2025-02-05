@@ -7,34 +7,35 @@ use Doctrine\DBAL\DBALException;
 use EasyApiCore\Model\EntityConfiguration;
 use EasyApiCore\Util\Entity\EntityConfigLoader;
 use Symfony\Component\DependencyInjection\ContainerInterface;
+use Twig\Environment;
 
 class AbstractGenerator
 {
     public const DEFAULT_SKELETON_PATH = '@EasyApiMaker/templates/skeleton/';
-
     /**
      * @var string
      */
-    protected static $templatesDirectory = '';
-
+    protected static string $templatesDirectory = '';
     /**
      * @var ContainerInterface
      */
-    protected $container;
-
     /**
      * @var EntityConfiguration
      */
     protected $config;
 
-    public function __construct(ContainerInterface $container)
+    public function __construct(protected ContainerInterface $container, protected Environment $twig)
     {
-        $this->container = $container;
     }
 
     protected function getContainer(): ContainerInterface
     {
         return $this->container;
+    }
+
+    protected function getTwig(): Environment
+    {
+        return $this->twig;
     }
 
     protected function getConfig(): EntityConfiguration

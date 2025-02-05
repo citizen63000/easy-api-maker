@@ -5,7 +5,10 @@ namespace EasyApiMaker\Framework;
 use EasyApiCore\Model\EntityConfiguration;
 use EasyApiCore\Util\Forms\FormSerializer;
 use EasyApiCore\Util\String\CaseConverter;
+use Symfony\Component\DependencyInjection\ContainerInterface;
+use Symfony\Component\Form\FormFactoryInterface;
 use Symfony\Component\Form\FormInterface;
+use Twig\Environment;
 
 class TiCrudGenerator extends AbstractGenerator
 {
@@ -17,17 +20,16 @@ class TiCrudGenerator extends AbstractGenerator
     /**
      * @var string
      */
-    protected static $templatesDirectory = '/TI/';
+    protected static string $templatesDirectory = '/TI/';
 
-    /**
-     * @var array
-     */
-    private static $content;
+    private static array $content;
 
-    /**
-     * @var array
-     */
-    private static $sqlContent;
+    private static array $sqlContent;
+    
+    public function __construct(ContainerInterface $container, Environment $twig, protected FormFactoryInterface $formFactory)
+    {
+        parent::__construct($container, $twig);
+    }
 
     /**
      * @throws \Exception
@@ -58,7 +60,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateGetTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_get.php.twig'),
             $this->generateContent()
         );
@@ -71,7 +73,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateGetListTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_get_list.php.twig'),
             $this->generateContent()
         );
@@ -84,7 +86,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateDescribeFormTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_describe_form.php.twig'),
             $this->generateContent()
         );
@@ -97,7 +99,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generateDeleteTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_delete.php.twig'),
             $this->generateContent()
         );
@@ -110,7 +112,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generatePostTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_post.php.twig'),
             $this->generateContent()
         );
@@ -123,7 +125,7 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function generatePutTests(bool $dumpExistingFiles = false): string
     {
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_put.php.twig'),
             $this->generateContent()
         );
@@ -136,7 +138,7 @@ class TiCrudGenerator extends AbstractGenerator
     protected function generateAbstractContext(bool $dumpExistingFiles = false): string
     {
         $abstractContextName = $this->getAbstractContextTestName();
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('abstract_context.php.twig'),
             $this->generateContent()
         );
@@ -163,7 +165,7 @@ class TiCrudGenerator extends AbstractGenerator
         $directory = $this->generateDataCsvDirectoryPath();
         foreach ($dataFixtures['tables'] as $table) {
 
-            $fileContent = $this->getContainer()->get('twig')->render(
+            $fileContent = $this->getTwig()->render(
                 $this->getTemplatePath('crud_data.csv.twig'),
                 [ 'table' => $table]
             );
@@ -187,7 +189,7 @@ class TiCrudGenerator extends AbstractGenerator
         }
 
         // yml content
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('crud_data.yml.twig'),
             ['files' => $ymlData]
         );
@@ -213,7 +215,7 @@ class TiCrudGenerator extends AbstractGenerator
             // form
             $requiredFieldsForArray = [];
             try {
-                $describer = new FormSerializer($this->container->get('form.factory'), $this->container->get('router'), $this->getDoctrine());
+                $describer = new FormSerializer($this->formFactory, $this->container->get('router'), $this->getDoctrine());
                 $context = (!empty($this->config->getContextName()) ? "{$this->config->getContextName()}\\" : '');
                 $formName = "{$this->config->getBundleName()}\\Form\\Type\\{$context}{$this->config->getEntityName()}Type";
                 $form = $describer->normalize($this->createForm($formName));
@@ -437,6 +439,6 @@ class TiCrudGenerator extends AbstractGenerator
      */
     protected function createForm(string $type, $data = null, array $options = array()): FormInterface
     {
-        return $this->container->get('form.factory')->create($type, $data, $options);
+        return $this->formFactory->create($type, $data, $options);
     }
 }

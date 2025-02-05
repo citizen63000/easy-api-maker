@@ -11,10 +11,10 @@ use EasyApiCore\Util\String\Inflector;
 class EntityGenerator extends AbstractGenerator
 {
     public const DEFAULT_ENTITY_SKELETON = 'doctrine/entity.php.twig';
-    protected $useDoctrineAnnotations = true;
+    protected bool $useDoctrineAnnotations = true;
 
     protected const doctrineAnnotationAlias = 'ORM';
-    protected static $doctrineAnnotationPrefix = '@'.self::doctrineAnnotationAlias;
+    protected static string $doctrineAnnotationPrefix = '@'.self::doctrineAnnotationAlias;
 
     /**
      * @return array
@@ -213,7 +213,7 @@ class EntityGenerator extends AbstractGenerator
 
         $destinationDir = str_replace(['\\', 'App/'], ['/', ''], 'src\\'.$this->config->getNamespace().'\\');
         $filename = $this->config->getEntityName().'.php';
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getEntitySkeletonPath(),
             $this->generateContent()
         );

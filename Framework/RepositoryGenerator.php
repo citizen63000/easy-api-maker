@@ -30,7 +30,7 @@ class RepositoryGenerator extends AbstractGenerator
         $files = [];
 
         // Create entityRepository file
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('doctrine/entity_repository.php.twig'),
             $this->generateContent()
         );

@@ -7,22 +7,16 @@ use EasyApiCore\Model\EntityField;
 
 class FormGenerator extends AbstractGenerator
 {
-    protected static $templatesDirectory = '/doctrine';
-    /**
-     * @param string $context
-     * @param string $entityName
-     * @param string|null $parent
-     * @param bool $dumpExistingFiles
-     * @return string
-     */
-    public function generate(?string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false)
+    protected static string $templatesDirectory = '/doctrine';
+
+    public function generate(?string $context, string $entityName, string $parent = null, bool $dumpExistingFiles = false): string
     {
         $this->config = $this->loadEntityConfig($entityName, $context);
         $destinationDir = $this->getFormDirectoryPath();
         $filename = "{$this->config->getEntityName()}Type.php";
 
         // generate file
-        $fileContent = $this->getContainer()->get('twig')->render(
+        $fileContent = $this->getTwig()->render(
             $this->getTemplatePath('form.php.twig'),
             $this->generateContent($parent)
         );

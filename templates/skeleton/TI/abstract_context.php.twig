@@ -7,10 +7,10 @@ use {{ entity_use }};
 
 abstract class {{ abstractContextName }} extends AbstractFunctionalTest
 {
-    protected const baseRouteName = '{{ route_name_prefix }}';
-    protected const entityClass = {{ entity_name }}::class;
+    protected const ?string baseRouteName = '{{ route_name_prefix }}';
+    protected const ?string entityClass = {{ entity_name }}::class;
 
-    protected static $additionalInitFiles = ['{{ additionalInitFile }}'];
+    protected static array $additionalInitFiles = ['{{ additionalInitFile }}'];
 
     protected static function getRequiredFields(): array
     {
