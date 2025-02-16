@@ -12,7 +12,7 @@ use {{ use }};
 class {{ classname }}Type {% if parent != '' %}extends {{ parent }} {% endif %}
 
 {
-    protected static $dataClass = {{ classname }}::class;
+    protected static ?string $dataClass = {{ classname }}::class;
 
     /**
      * {@inheritdoc}

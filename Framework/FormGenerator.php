@@ -44,7 +44,7 @@ class FormGenerator extends AbstractGenerator
         $content = ['fields' => [], 'uses' => [$this->config->getFullName() => $this->config->getFullName()], '__construct' => ['fields' => []]];
         $parentConfig = $this->getConfig()->getParentEntity();
 
-        if (null === $parent && $parentConfig && $parentConfig->getEntityName() !== 'AbstractBaseEntity') {
+        if (null === $parent && $parentConfig && $parentConfig->getEntityName() !== 'AbstractBaseEntity' && $parentConfig->getEntityName() !== 'AbstractBaseUniqueEntity') {
             $content['uses'][] = "Form\Type\\".$parentConfig->getContextName().'\\'.$parentConfig->getEntityName().'Type';
             $content['parent'] = $parentConfig->getEntityName();
         } elseif (null !== $parent) {
