@@ -89,7 +89,7 @@ final class MakeEntityCommand extends AbstractMakerCommand
 
         // generate Entity class
         $output->writeln('------------- Generate Entity class -------------');
-        $generator = new EntityGenerator($this->getContainer());
+        $generator = new EntityGenerator($this->getContainer(), $this->getTwig());
         $filePath = $this->getParameter('kernel.project_dir').'/'.$generator->generate($tableName, $entityName, $schema, $parent, $inheritanceType, $context, !$dumpOption);
         $output->writeln("file://{$filePath} created.");
 
